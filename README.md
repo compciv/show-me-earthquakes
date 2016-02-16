@@ -3,7 +3,11 @@
 # How to use this
 
 
-
+~~~
+git clone https://github.com/compciv/show-me-earthquakes
+cd show-me-earthquakes
+python woz.py
+~~~
 
 ### Directory structure
 
