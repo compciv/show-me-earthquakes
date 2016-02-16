@@ -93,6 +93,9 @@ if __name__ == '__main__':
         html_txt = publish(user_location)
         print("Writing to:", LOCAL_WEBPAGE_PATH)
         sleep(2) # pausing...
+        with open(LOCAL_WEBPAGE_PATH, 'w') as f:
+            f.write(html_txt)
+
         print("Sending you to:", LOCAL_WEBPAGE_PATH)
         webbrowser.open(LOCAL_WEBPAGE_PATH)
 

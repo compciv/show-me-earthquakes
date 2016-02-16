@@ -59,7 +59,7 @@ def google_static_map_url(marker):
     """
     marker is a string, e.g. "Ohio" or "34,-78.9"
     """
-    basicurl = 'https://maps.googleapis.com/maps/api/staticmap?size=600x400&zoom=7'
+    basicurl = 'https://maps.googleapis.com/maps/api/staticmap?size=340x340&zoom=7'
     return basicurl + "&markers=" + marker
 
 
@@ -87,7 +87,7 @@ HTML_BOILERPLATE_HEAD = """
     </head>
     <body>
     <section class="container">
-      <h1>Earthquakes near you!<h1>
+      <h1>Earthquakes near you!</h1>
 
       <p>
        Here are the <strong>{quake_count}</strong>
@@ -95,7 +95,7 @@ HTML_BOILERPLATE_HEAD = """
         in the past <strong>30 days</strong>,
        according
        to the United States Geological Survey
-       <a href="http://earthquake.usgs.gov/earthquakes/feed/v1.0/csv.php>Earthquake Hazards Program.</a>
+       <a href="http://earthquake.usgs.gov/earthquakes/feed/v1.0/csv.php">Earthquake Hazards Program.</a>
       </p>
 """
 
