@@ -9,66 +9,57 @@ So try to copy this project (via the instructions below) and run it. You can put
 
 ## How to download it
 
-The [project homepage is here](https://github.com/compciv/show-me-earthquakes).
+Use `git clone` from the system shell's command line.
 
-### Downloading via point-and-click
+This will create a new subdirectory named `show-me-earthquakes` wherever you run the command from. So you might want to move into a directory that you want to save it in (i.e. NOT YOUR OWN COMPCIV FOLDER):
 
-Note: I don't recommend doing it this way. Use __git clone__ instead, as described in the next section.
+~~~sh
+$ cd ~/Desktop
+~~~
 
-Uh, since this program runs from the command-line anyway, you'll _eventually_ want to open up your system shell. But if you're having `git` problems, you can download a ZIP file of the project the old-fashioned way via this URL:
-
-[https://github.com/compciv/show-me-earthquakes/archive/master.zip](https://github.com/compciv/show-me-earthquakes/archive/master.zip)
-
-
-### Downloading via the command-line
-
-
-
-First, `cd` into a directory that you want to dump it to, e.g. `cd ~/Desktop` or `cd /tmp`.
 
 Then download it using the `git clone` command -- it will automatically create a subdirectory named `show-me-earthquakes`:
 
 ~~~sh
-git clone https://github.com/compciv/show-me-earthquakes
+$ git clone https://github.com/compciv/show-me-earthquakes
 ~~~
 
-Using __git clone__ is the way to do it. And it should work even if you don't have a Github account. 
-
-Don't use these other methods unless __git clone__ doesn't work at all for you.
+It should work even if you don't have a Github account.
 
 
+If it works, you can change into that subdirectory like so:
 
-__Alternatively__, if you're having problems with `git`, you can download the URL via __curl__:
+~~~
+$ cd show-me-earthquakes
+~~~
+
+
+### Downloading via point-and-click
+
+Note: I don't recommend doing it this way. Use __git clone__ instead, as described in the next section...because since this program runs from the command-line anyway, you'll _eventually_ want to open up your system shell. But if you're having `git` problems, you can download a ZIP file of the project the old-fashioned way via this URL:
+
+[https://github.com/compciv/show-me-earthquakes/archive/master.zip](https://github.com/compciv/show-me-earthquakes/archive/master.zip)
+
+Double clicking that zip will make a new folder named:
+
+
+Now you just have to get into that folder via the command-line...i.e. if you saved it into your `~/Downloads` folder, you can do this:
 
 ~~~sh
-curl -Lo show-me-earthquakes.zip \
-  https://github.com/compciv/show-me-earthquakes/archive/master.zip 
+$ cd ~/Downloads/show-me-earthquakes-master
 ~~~
 
-Then unzip that zip:
 
-~~~sh
-unzip show-me-earthquakes.zip
-# this creates a subdirectory named show-me-earthquakes-master
-# just rename it so the following instructions are consistent:
-mv show-me-earthquakes-master/ show-me-earthquakes
-~~~
 
-Either way, via `git` or `curl` + `zip`, you should have a subdirectory named `show-me-earthquakes`. 
+## Trying it out
 
-Change into the subdirectory:
-
-~~~sh
-cd show-me-earthquakes
-~~~
-
-Finally, you can run the program as you would any other Python script:
+When you're in the projects directory, uou can run the program as you would any other Python script:
 
 ~~~sh
 python woz.py
 ~~~
 
-## Trying it out
+
 
 Running `woz.py` should take you to a prompt like this:
 
@@ -94,7 +85,20 @@ It means what it says. So create a new file in the current directory named `cred
 
       search-xxyyzz
 
-Then try the `geocode` command.
+Then try the `geocode` command again. It should give you a response like this:
+
+~~~
+Type in a location/address to geocode: Stanford, CA
+{
+    "label": "Stanford, Santa Clara County, CA",
+    "longitude": -122.16608,
+    "latitude": 37.42411,
+    "text": "Stanford, CA",
+    "confidence": 0.6,
+    "status": "OK",
+    "country": "United States"
+}
+~~~
 
 
 ### Seeing a webpage
