@@ -9,57 +9,66 @@ from utils.publishing import publish
 from time import sleep
 import webbrowser
 import json
+MY_COMMANDS = ["hello", "help", "bootstrap", "wrangle", "geocode",
+               "filtrate", "report", "publish"]
+
+def bolden(x):
+    return '\033[1m' + str(x) + '\033[0m'
+
+def bprint(*args):
+    print(bolden(" ".join(args)))
+
+
 
 if __name__ == '__main__':
-    print("Available commands:")
-    print(["bootstrap", "wrangle", "filtrate", "report", "publish"])
-    the_command = input("What do you want to do? ")
+    bprint("Welcome to Dan's program!")
+    bprint("Available commands:")
+    for cmdstr in MY_COMMANDS:
+        print("\t- " + cmdstr)
+    print()
+
+
+    the_command = input(bolden("What do you want to do? "))
 
     if the_command == 'hello':
-        print("What is your name? ")
-        username = input()
-        print("Well, hello there, ", username.upper() + '!!!')
+        username = input(bolden("What is your name? "))
+        bprint("Well, hello there,", username.upper() + '!!!')
 
     elif the_command == 'help':
-        print("Here is the documentation of the commands!")
+        bprint("Here is the documentation of the commands!")
 
-        print("bootstrap")
+        bprint("bootstrap")
         print(bootstrap.__doc__)
-
-        print("wrangle")
+        bprint("wrangle")
         print(wrangle.__doc__)
-
-        print("geocode")
+        bprint("geocode")
         print(geocode.__doc__)
-
-        print("filtrate")
+        bprint("filtrate")
         print(filtrate.__doc__)
-
-        print("report")
+        bprint("report")
         print(report.__doc__)
-
-        print("publish")
+        bprint("publish")
         print(publish.__doc__)
 
 
     elif the_command == 'bootstrap':
-        print("Let's bootstrap the data!")
+        bprint("Let's bootstrap the data!")
         bootstrap()
 
     elif the_command == 'wrangle':
-        print("Let's wrangle the data!")
+        bprint("Let's wrangle the data!")
         wrangle()
 
     elif the_command == 'geocode':
-        print("Type in a location/address to geocode: ")
-        user_location = input()
+        user_location = input(bolden("Type in a location/address to geocode: "))
         georesult = geocode(user_location)
         # normally we pass the georesult dict into
         # another function that might use it
         # but since the user is using our simple text interface
         # we can just serialize it as text and
         # print it to screen
-        print(json.dumps(georesult, indent=4))
+        serialized_results = json.dumps(georesult, indent=4)
+        print(serialized_results)
 
     elif the_command == 'filtrate':
         # because input() ALWAYS takes what it is given and turns it
@@ -77,7 +86,7 @@ if __name__ == '__main__':
         print(serialized_results)
 
     elif the_command == 'report':
-        user_location = input("What is your current location/address? ")
+        user_location = input(bolden("What is your current location/address? "))
         georesult = geocode(user_location)
         # if there is a valid, 'status' is "OK"; else it is None
         if georesult['status']:
@@ -85,19 +94,20 @@ if __name__ == '__main__':
             lat = georesult['latitude']
             report(lng, lat)
         else:
-            print("Your location", location, "did not return any results.")
+            bprint("Your location", location, "did not return any results.")
 
 
     elif the_command == 'publish':
-        user_location = input("What is your current location/address? ")
+        user_location = input(bolden("What is your current location/address? "))
         html_txt = publish(user_location)
-        print("Writing to:", LOCAL_WEBPAGE_PATH)
-        sleep(2) # pausing...
+        bprint("Writing to:", LOCAL_WEBPAGE_PATH)
+        sleep(1) # pausing...
         with open(LOCAL_WEBPAGE_PATH, 'w') as f:
             f.write(html_txt)
 
-        print("Sending you to:", LOCAL_WEBPAGE_PATH)
-        webbrowser.open(LOCAL_WEBPAGE_PATH)
+        bprint("Sending you to:", LOCAL_WEBPAGE_PATH)
+        webbrowser.open('file://' + LOCAL_WEBPAGE_PATH)
 
     else:
-        print("Did not recognize command", the_command)
+        bprint("Did not recognize command", the_command)
+

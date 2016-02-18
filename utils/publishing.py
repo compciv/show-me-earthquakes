@@ -1,7 +1,15 @@
 from utils.filtrating import filtrate
 from utils.geocoding import geocode
+from utils.mapping import google_static_map_url, google_map_marker
+from utils.settings import USGS_QUAKE_EVENT_BASEURL
+import os.path
 
-
+# HTML text templates
+HTML_TEMPLATE_DIR = 'templates'
+HTML_HEAD_FILENAME = os.path.join(HTML_TEMPLATE_DIR, 'head.html')
+HTML_ROW_FILENAME  = os.path.join(HTML_TEMPLATE_DIR, 'row.html')
+HTML_NARRATIVE_FILENAME  = os.path.join(HTML_TEMPLATE_DIR, 'narrative.html')
+HTML_TAIL_FILENAME  = os.path.join(HTML_TEMPLATE_DIR, 'tail.html')
 
 def publish(location):
     """
@@ -25,42 +33,41 @@ def publish(location):
     georesult = geocode(location)
     quakes = filtrate(georesult['longitude'], georesult['latitude'])
 
-    # let's make a big string
-    html_text = ""
-    # add the topper
-    html_text += HTML_BOILERPLATE_HEAD.format(quake_count=len(quakes),
-                                              location=georesult['label'])
+    #### let's make a big string of HTML
+    giant_html_string = ""
 
-    # for each quake, add HTML for the row
+    ##### Make the top of the page
+    gmarkers = []
+    for xid, quake in enumerate(quakes):
+        latlng = str(quake['latitude']) + ',' + str(quake['longitude'])
+        marker = google_map_marker(latlng, color="red", label=str(xid))
+        gmarkers.append(marker)
+
+    bigmap_url = google_static_map_url(markers = gmarkers, size="800x400")
+    giant_html_string += html_head(quake_count=len(quakes),
+                                   location=georesult['label'],
+                                   map_url=bigmap_url)
+
+    ##### Now add each quake as a "row"
     for q in quakes:
         latlngstr = "%s,%s" % (q['latitude'], q['longitude'])
-        narrative_html = HTML_NARRATIVE_TEXT.format(
-            time=q['time'],
-            place=q['place'],
-            magnitude=q['mag']
-        )
 
-        html_text += HTML_BOILERPLATE_ROW.format(
-            map_url=google_static_map_url(latlngstr),
-            quake_id=q['id'],
-            narrative=narrative_html
-        )
-    ## Now write the tail
+        # each row has a bit of narrative text, which
+        # I've put into its own function
+        narrative_html = html_narrative(time=q['time'],
+                                        place=q['place'],
+                                        magnitude=q['mag'])
 
-    html_text += HTML_BOILERPLATE_TAIL
-    # and we're done
-    return html_text
+        # For each quake/row, just throw it onto the giant_html_string
+        giant_html_string += html_row(
+                        map_url=google_static_map_url(latlngstr, zoom = 12),
+                        narrative=narrative_html,
+                        quake_id=q['id'])
+    ##### Now slap on the tail of the HTML
+    giant_html_string += html_tail()
 
-
-
-
-# super lazy!
-def google_static_map_url(marker):
-    """
-    marker is a string, e.g. "Ohio" or "34,-78.9"
-    """
-    basicurl = 'https://maps.googleapis.com/maps/api/staticmap?size=340x340&zoom=7'
-    return basicurl + "&markers=" + marker
+    ##### ...and we're done
+    return giant_html_string
 
 
 def friendly_timestamp(uglytimestamp):
@@ -76,61 +83,25 @@ def friendly_timestamp(uglytimestamp):
     return dateobj.strftime("%A, %B %y, %Y, %-l:%M %p")
 
 
+def html_head(quake_count, location, map_url):
+     with open(HTML_HEAD_FILENAME, 'r') as f:
+        txt = f.read()
+        return txt.format(quake_count=quake_count, location=location, map_url=map_url)
 
-HTML_BOILERPLATE_HEAD = """
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <title>My Cool Webpage</title>
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    </head>
-    <body>
-    <section class="container">
-      <h1>Earthquakes near you!</h1>
+def html_row(narrative, map_url, quake_id):
+     with open(HTML_ROW_FILENAME, 'r') as f:
+        txt = f.read()
+        quake_url = USGS_QUAKE_EVENT_BASEURL + quake_id
 
-      <p>
-       Here are the <strong>{quake_count}</strong>
-         closest earthquakes to {location}
-        in the past <strong>30 days</strong>,
-       according
-       to the United States Geological Survey
-       <a href="http://earthquake.usgs.gov/earthquakes/feed/v1.0/csv.php">Earthquake Hazards Program.</a>
-      </p>
-"""
+        return txt.format(narrative=narrative,
+                          more_info_url=quake_url,
+                          map_url=map_url)
 
-HTML_BOILERPLATE_ROW = """
-<div class="row">
-  <div class="col-sm-4">
-    <img src="{map_url}" alt="map stuff">
-  </div>
-  <div class="col-sm-8">
-      {narrative}
-      <a href="http://earthquake.usgs.gov/earthquakes/eventpage/{quake_id}">
-        Read more...
-     </a>
-  </div>
-</div>
-"""
+def html_narrative(time, magnitude, place):
+     with open(HTML_NARRATIVE_FILENAME, 'r') as f:
+        txt = f.read()
+        return txt.format(time=time, magnitude=magnitude, place=place)
 
-
-HTML_NARRATIVE_TEXT = """
-        <p>
-         At <strong>{time}</strong>
-         an earthquake of magnitude <strong>{magnitude}</strong>
-         hit near <strong>{place}</strong>
-        </p>
-"""
-
-
-
-HTML_BOILERPLATE_TAIL = """
-    <p>Todo: Make a multi-marker Google Map to show all earthquakes at once.</p>
-
-    <p>That is all. I am awesome!</p>
-    <img src="http://placecage.com/800/500" alt="cage">
-
-    </section>
-</body>
-</html>
-"""
+def html_tail():
+     with open(HTML_TAIL_FILENAME, 'r') as f:
+        return f.read()

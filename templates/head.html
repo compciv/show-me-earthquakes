@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Cool Webpage</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="http://www.compciv.org/files/code/styles/showmestuff.css">
+
+</head>
+<body>
+<section class="container">
+  <h1>Earthquakes near you!</h1>
+
+
+  <p>
+   Here are the
+
+   <strong>{quake_count}</strong>
+
+     closest earthquakes to
+
+     <strong>{location}</strong>
+
+     in the past
+
+     <strong>30 days</strong>,
+
+   according
+
+   <a href="http://earthquake.usgs.gov/earthquakes/feed/v1.0/csv.php">
+     to the United States Geological Survey Earthquake Hazards Program.
+   </a>
+  </p>
+
+
+  <img src="{map_url}" alt="the big mapper">
