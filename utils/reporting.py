@@ -1,5 +1,4 @@
 from utils.filtrating import filtrate, haversine
-from utils.publishing import friendly_timestamp
 from utils.settings import USGS_QUAKE_EVENT_BASEURL
 
 def report(lng, lat):
@@ -31,15 +30,14 @@ def report(lng, lat):
     quakes = filtrate(lng, lat)
 
     for q in quakes:
-        datestring = friendly_timestamp(q['time'])
         quake_pt = (float(q['longitude']), float(q['latitude']))
         distance = round(haversine(user_pt, quake_pt), 1)
         quake_url =  USGS_QUAKE_EVENT_BASEURL + q['id']
-        infotxt = NARRATIVE_INFO_TEMPLATE.format(date=datestring,
-                                       place=q['place'],
-                                       magnitude=q['mag'],
-                                       distance=distance,
-                                       quake_url=quake_url)
+        infotxt = NARRATIVE_INFO_TEMPLATE.format(date=q['time'],
+                                                 place=q['place'],
+                                                 magnitude=q['mag'],
+                                                 distance=distance,
+                                                 quake_url=quake_url)
         print(infotxt)
 
 
@@ -49,6 +47,6 @@ def report(lng, lat):
 
 NARRATIVE_INFO_TEMPLATE = """
 On {date}, roughly {distance} km from you,
-   a M{magnitude} earthquake struck {place}.
+   a magnitude {magnitude} earthquake struck {place}.
    {quake_url}
 """

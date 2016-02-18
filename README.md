@@ -53,35 +53,25 @@ Finally, you can run the program as you would any other Python script:
 python woz.py
 ~~~
 
+## Trying it out
+
+Running `woz.py` should take you to a prompt like this:
+
+![image welcome.png](sample-data/assets/welcome.png)
+
+And you should be able to try out any of those commands. For now, try the `"hello"` command:
+
+
+
+
+### Getting a geocoding error
+
+
+
+## Add your Mapzen key
 
 
 
 
 
 
-~~~
-git clone 
-cd show-me-earthquakes
-python woz.py
-~~~
-
-### Directory structure
-
-~~~
-├── README.md
-├── creds_mapzen.txt
-├── data
-│   ├── original
-│   │   └── earthquakes.csv
-│   └── wrangled-data.csv
-├── utils
-│   ├── __init__.py
-│   ├── bootstrapping.py
-│   ├── filtrating.py
-│   ├── geocoding.py
-│   ├── publishing.py
-│   ├── reporting.py
-│   ├── settings.py
-│   └── wrangling.py
-└── woz.py
-~~~

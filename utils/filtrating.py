@@ -1,4 +1,5 @@
 from utils.settings import WRANGLED_DATA_FILENAME
+from utils.mapping import haversine
 import csv
 
 def filtrate(lng, lat):
@@ -53,26 +54,3 @@ def filtrate(lng, lat):
     nearest_quakes = sorted(quakes, key=lambdakey)
 
     return nearest_quakes[0:5]
-
-def haversine(pt_a, pt_b):
-    """
-    `pt_a` and `pt_b` are tuples with two float numbers each, i.e.
-    representing lng/lat pairs:
-    (99,100)  (-42, 85)
-
-    The geo distance between the two points is returned in kilometers
-    """
-    from math import radians, cos, sin, asin, sqrt
-
-    lng_a = radians(pt_a[0])
-    lng_b = radians(pt_b[0])
-    lat_a = radians(pt_a[0])
-    lat_b = radians(pt_b[0])
-    # haversine formula
-    dlng = lng_b - lng_a
-    dlat = lat_b - lat_a
-    whatevs = sin(dlat /2 ) ** 2 + cos(lat_a) * cos(lat_b) * sin(dlng / 2) ** 2
-    c = 2 * asin(sqrt(whatevs))
-    r = 6371 # Radius of earth in kilometers.
-    # return the final calculation
-    return c * r
