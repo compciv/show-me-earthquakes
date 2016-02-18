@@ -99,7 +99,12 @@ Then try the `geocode` command.
 
 ### Seeing a webpage
 
-Ultimately, your project will respond to a __publish__ command that will behave similarly to this demo project. But see if it works for you in the demo project:
+Ultimately, your project will respond to a __publish__ command that will behave similarly to this demo project. But see if it works for you in the demo project. First you have to run `python woz.py` and run the following two commands:
+
+- `bootstrap`
+- `wrangle`
+
+Then run it again, but run the `publish` command:
 
 ![img](sample-data/assets/hello-nic-cage.gif)
 
