@@ -15,7 +15,7 @@ WRANGLED_DATA_FILENAME = join(DATA_DIR, 'wrangled-data.csv')
 GEOCODER_CREDENTIALS_FILENAME = 'creds_mapzen.txt'
 
 # A place to throw a webpage on the local hard drive
-LOCAL_WEBPAGE_PATH = join(DATA_DIR, "myfunwebpage.html")
+LOCAL_WEBPAGE_PATH = os.path.realpath(join(DATA_DIR, "myfunwebpage.html"))
 
 
 USGS_QUAKE_EVENT_BASEURL = "http://earthquake.usgs.gov/earthquakes/eventpage/"
