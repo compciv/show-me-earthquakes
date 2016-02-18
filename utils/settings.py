@@ -1,7 +1,7 @@
 from os.path import join
 
 # directories
-DATA_DIR = 'data'
+DATA_DIR = 'tempdata'
 ORIGINAL_DATA_DIR = join(DATA_DIR, 'original')
 
 # various data files
